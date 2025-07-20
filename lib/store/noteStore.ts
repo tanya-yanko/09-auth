@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { NewNoteData } from '@/types/note';
 
+
 type noteDraftStore = {
   draft: NewNoteData;
   setDraft: (note: NewNoteData) => void;
@@ -27,3 +28,5 @@ export const useNoteDraftStore = create<noteDraftStore>()(
     }
   )
 );
+
+export type Draft = NewNoteData;

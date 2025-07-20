@@ -5,6 +5,8 @@ import Footer from '@/components/Footer/Footer';
 import { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import css from './Main.module.css';
+import { getSessionServer } from "@/lib/api/serverApi";
+import type { User } from "@/types/user";
 
 export const metadata: Metadata = {
   title: 'Web app to create and manage your own notes by categories',
@@ -50,21 +52,21 @@ type ChildrenType = {
   modal: React.ReactNode;
 };
 
-export default function RootLayout({
-  children,
-  modal,
-}: Readonly<ChildrenType>) {
+export default async function RootLayout({ children, modal }: RootLayoutProps) {
+  const initialUser: User | null = await getSessionServer();
+
   return (
     <html lang="en">
-      <body className={roboto.variable}>
+      <body className={roboto.className}>
         <TanStackProvider>
-          <Header />
-          <main className={css.main}>{children}</main>
-          {}
-          <Footer />
-          <div style={{ position: 'fixed', top: 0, left: 0 }}>{modal}</div>
+          
+          <AuthProvider initialUser={initialUser}>
+            <Header />
+            <main style={{ flex: 1 }}>{children}</main>
+            {modal}
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>
   );
-}
